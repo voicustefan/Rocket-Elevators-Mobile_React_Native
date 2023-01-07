@@ -6,13 +6,18 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (email, setEmail, password, setPassword) => {
-    const navigation = useNavigation();
-    if(isLogin){
-        navigation.navigate('Home');
-    } else {
-        navigation.navigation('Login');
-    }
+  async function handleLogin () {
+    let item = {email, password}
+    let result = await fetch('https://localhost:3306/employees?email=${email}&password=${password}', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "accept": 'application/json'
+      },
+      body: JSON.stringify(item),
+    })
+    result = await result.json();
+    localStorage.setItem("user-info", JSON.stringify(result));
   };
 
   return (
